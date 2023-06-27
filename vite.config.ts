@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vitest-tsconfig-paths'
+import tsConfigPaths from 'vitest-tsconfig-paths'
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
+  plugins: [tsConfigPaths()],
 })
