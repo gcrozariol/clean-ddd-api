@@ -2,6 +2,8 @@ import { expect, it, describe, beforeEach } from 'vitest'
 import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
 import { DeleteAnswerCommentUseCase } from './delete-answer-comment'
 import { makeAnswerComment } from 'test/factories/make-answer-comment'
+import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
 let sut: DeleteAnswerCommentUseCase
@@ -30,20 +32,22 @@ describe('Delete Answer Comment Use Case', () => {
 
     await inMemoryAnswerCommentsRepository.create(answerComment)
 
-    await expect(() =>
-      sut.execute({
-        answerCommentId: answerComment.id.toString(),
-        authorId: 'wrong-author',
-      }),
-    ).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerCommentId: answerComment.id.toString(),
+      authorId: 'wrong-author',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
   it('should not be able to delete inexistent answer comment', async () => {
-    await expect(() =>
-      sut.execute({
-        answerCommentId: 'answer-1',
-        authorId: 'author-1',
-      }),
-    ).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerCommentId: 'answer-1',
+      authorId: 'author-1',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })
