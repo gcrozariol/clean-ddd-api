@@ -40,7 +40,7 @@ describe("Choose Question's Best Answer Use Case", () => {
     expect(inMemoryQuestionsRepository.items[0].bestAnswerId).toEqual(answer.id)
   })
 
-  it("should not be able to set question's best answer from another author", async () => {
+  it("should not be able to set question's best answer from another question author", async () => {
     const question = makeQuestion({
       authorId: new UniqueEntityID('author-1'),
     })
@@ -62,10 +62,6 @@ describe("Choose Question's Best Answer Use Case", () => {
   })
 
   it('should not be able to set inexistent question best answer', async () => {
-    const answer = makeAnswer()
-
-    await inMemoryAnswersRepository.create(answer)
-
     const result = await sut.execute({
       answerId: 'inexistent-question',
       authorId: 'invalid-author-id',
