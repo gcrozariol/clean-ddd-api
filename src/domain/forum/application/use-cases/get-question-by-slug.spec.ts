@@ -34,10 +34,11 @@ describe('Get Question By Slug Use Case', () => {
     })
 
     expect(result.isRight()).toBe(true)
-
-    if (result.isRight()) {
-      expect(result.value.question.title).toEqual(newQuestion.title)
-    }
+    expect(result.value).toMatchObject({
+      question: expect.objectContaining({
+        title: newQuestion.title,
+      }),
+    })
   })
 
   it('should not be able to retrieve a question if slug does not match', async () => {
