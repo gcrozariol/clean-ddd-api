@@ -20,6 +20,7 @@ describe('Edit Question Use Case', () => {
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
     )
+
     sut = new EditQuestionUseCase(
       inMemoryQuestionsRepository,
       inMemoryQuestionAttachmentsRepository,
@@ -42,7 +43,7 @@ describe('Edit Question Use Case', () => {
 
       makeQuestionAttachment({
         questionId: newQuestion.id,
-        attachmentId: new UniqueEntityID('1'),
+        attachmentId: new UniqueEntityID('2'),
       }),
     )
 
