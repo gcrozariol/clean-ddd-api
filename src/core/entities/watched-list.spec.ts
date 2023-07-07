@@ -14,6 +14,11 @@ describe('Watched List', () => {
     list = new NumberWatchedList([1, 2, 3])
   })
 
+  it('should be able to check if item exists', () => {
+    const item = list.exists(list.getItems()[0])
+    expect(item).toBe(true)
+  })
+
   it('should be able to create a watched list with initial items', () => {
     expect(list.currentItems).toHaveLength(3)
   })
