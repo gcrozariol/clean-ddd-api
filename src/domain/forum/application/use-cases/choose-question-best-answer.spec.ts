@@ -77,10 +77,26 @@ describe("Choose Question's Best Answer Use Case", () => {
     expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
-  it('should not be able to set inexistent question best answer', async () => {
+  it('should not be able to set inexistent answer as best answer', async () => {
     const result = await sut.execute({
       answerId: 'inexistent-question',
       authorId: 'invalid-author-id',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('should not be able to set best answer to inexistent question', async () => {
+    const answer = makeAnswer({
+      questionId: new UniqueEntityID('inexistent-question'),
+    })
+
+    await inMemoryAnswersRepository.create(answer)
+
+    const result = await sut.execute({
+      answerId: answer.id.toString(),
+      authorId: 'inexistent-author',
     })
 
     expect(result.isLeft()).toBe(true)
